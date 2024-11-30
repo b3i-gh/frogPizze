@@ -8,6 +8,7 @@ function createNewOrder(){
   // cleans the order template
   paramSheet.getRange(17, 1, 50, 3).clear();
   paramSheet.getRange(16, 2).setValue("");
+  insertRandomEmoji();
   
   let copiedRows = 0; // counter to limit the pizzas per order
   const lastRow = responseSheet.getLastRow();
@@ -37,8 +38,9 @@ function createNewOrder(){
   if(copiedRows > 0){
     // copies the compiled order templates into the order sheet
     let orderTemplate = paramSheet.getRange(16, 1, paramSheet.getLastRow() - 5, 7);
-    orderTemplate.copyTo(orderSheet.getRange(orderSheet.getLastRow() + 2, 1), {contentsOnly: true});
-
+    const orderFirstRow = orderSheet.getLastRow() + 2;
+    orderTemplate.copyTo(orderSheet.getRange(orderFirstRow, 1), {contentsOnly: true});
+    orderSheet.getRange(orderFirstRow + 10, 6).setHorizontalAlignment("center");
     updateCurrentOrderNumber(currOrder); 
   }     
 }
@@ -161,4 +163,10 @@ function fillOrder(){
       .lastIndexOf("Ordine") + 9;
     orderTemplate.copyTo(orderSheet.getRange(lastOrderStartingRow, 1), {contentsOnly: true});
   }
+}
+  
+function insertRandomEmoji(){
+  const rndRow = Math.floor(Math.random() * 10) + 1;
+  const randomEmoji = paramSheet.getRange(rndRow ,6).getValue();
+  paramSheet.getRange(26, 6).setValue(randomEmoji);  
 }
